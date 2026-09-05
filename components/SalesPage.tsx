@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Reveal } from "@/components/Reveal";
 import { ArrowIcon, CheckIcon, FlowerMark } from "@/components/Icons";
+import { OrbitMap } from "@/components/OrbitMap";
 import {
   agenda,
   checkoutUrl,
@@ -168,11 +169,8 @@ export function SalesPage({ variant }: { variant: HeroVariant }) {
 
         <section className="section exercise-section">
           <div className="container exercise-grid">
-            <Reveal className="exercise-graphic">
-              <div className="map-node node-body">Corpo</div>
-              <div className="map-node node-mind">Mente</div>
-              <div className="map-node node-context">Contexto</div>
-              <div className="map-center">Seu padrão</div>
+            <Reveal className="exercise-visual">
+              <OrbitMap />
             </Reveal>
             <Reveal>
               <p className="eyebrow eyebrow-light">Você não vai sair apenas com conteúdo</p>

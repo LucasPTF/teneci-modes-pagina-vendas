@@ -312,14 +312,33 @@ h3 { font-size: 23px; }
 .exercise-grid h2 { max-width: 670px; }
 .exercise-grid p { color: rgba(255,253,250,0.78); font-size: 17px; }
 .exercise-grid .small-note { padding-top: 22px; border-top: 1px solid var(--white-line); font-size: 12px; }
-.exercise-graphic { position: relative; min-height: 460px; border: 1px solid var(--white-line); border-radius: 50%; }
-.exercise-graphic::before, .exercise-graphic::after { content: ""; position: absolute; inset: 16%; border: 1px solid var(--white-line); border-radius: 50%; }
+.exercise-visual { width: 100%; }
+.exercise-graphic { --orbit-radius: 36cqi; position: relative; width: min(100%, 460px); aspect-ratio: 1; margin-inline: auto; border: 1px solid var(--white-line); border-radius: 50%; container-type: inline-size; }
+.exercise-graphic::before, .exercise-graphic::after { content: ""; position: absolute; inset: 14%; border: 1px solid var(--white-line); border-radius: 50%; }
 .exercise-graphic::after { inset: 32%; }
+.orbit-item { position: absolute; inset: 50% auto auto 50%; z-index: 2; width: 0; height: 0; transform: rotate(var(--orbit-start)); animation: map-orbit 30s linear infinite; will-change: transform; }
+.orbit-body { --orbit-start: -90deg; --orbit-counter: 90deg; }
+.orbit-mind { --orbit-start: 30deg; --orbit-counter: -30deg; }
+.orbit-context { --orbit-start: 150deg; --orbit-counter: -150deg; }
 .map-node, .map-center { position: absolute; display: grid; place-items: center; min-width: 92px; min-height: 42px; padding: 8px 14px; border: 1px solid rgba(255,253,250,0.35); border-radius: 100px; background: var(--plum); font-family: var(--font-display), Georgia, serif; font-size: 15px; }
-.node-body { left: 8%; top: 40%; }
-.node-mind { right: 9%; top: 18%; }
-.node-context { right: 5%; bottom: 17%; }
+.map-node { transform: translate(-50%, -50%) translateY(calc(-1 * var(--orbit-radius))) rotate(var(--orbit-counter)); animation: map-counter-orbit 30s linear infinite; white-space: nowrap; will-change: transform; }
 .map-center { inset: 50% auto auto 50%; min-width: 120px; min-height: 120px; border-color: var(--rose); transform: translate(-50%, -50%); text-align: center; }
+
+@keyframes map-orbit {
+  to { transform: rotate(calc(var(--orbit-start) + 1turn)); }
+}
+
+@keyframes map-counter-orbit {
+  to { transform: translate(-50%, -50%) translateY(calc(-1 * var(--orbit-radius))) rotate(calc(var(--orbit-counter) - 1turn)); }
+}
+
+.exercise-graphic:not([data-orbit-active="true"]) .orbit-item,
+.exercise-graphic:not([data-orbit-active="true"]) .map-node { animation-play-state: paused; }
+
+@media (hover: hover) {
+  .exercise-graphic:hover .orbit-item,
+  .exercise-graphic:hover .map-node { animation-play-state: paused; }
+}
 
 .audience-section { background: var(--cream); }
 .audience-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
@@ -444,7 +463,8 @@ h3 { font-size: 23px; }
   .method-card { min-height: 260px; }
   .method-card h3 { margin-top: 54px; }
   .agenda-item { grid-template-columns: 50px 0.6fr 1fr; gap: 18px; }
-  .exercise-graphic { width: min(100%, 480px); min-height: 440px; margin-inline: auto; order: 2; }
+  .exercise-visual { order: 2; }
+  .exercise-graphic { width: min(100%, 460px); }
   .authority-visual { width: min(100%, 470px); margin-inline: auto; }
   .faq-heading { position: static; }
   .footer-grid { grid-template-columns: 1fr auto; }
@@ -480,7 +500,6 @@ h3 { font-size: 23px; }
   .method-quote .brand-mark { width: 42px; height: 42px; }
   .agenda-item { grid-template-columns: 42px 1fr; }
   .agenda-item p { grid-column: 2; }
-  .exercise-graphic { min-height: 330px; }
   .map-node { min-width: 76px; min-height: 38px; padding: 6px 10px; font-size: 12px; }
   .map-center { min-width: 98px; min-height: 98px; font-size: 13px; }
   .audience-card { padding: 34px 28px; }
@@ -503,6 +522,7 @@ h3 { font-size: 23px; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 1ms !important; animation-delay: 0ms !important; scroll-behavior: auto !important; }
+  .orbit-item, .map-node { animation: none; will-change: auto; }
   .reveal[data-motion="ready"] { opacity: 1; transform: none; transition: opacity 160ms var(--ease-out); }
   .cta-button, .header-link, .mobile-cta a { transition: color 160ms var(--ease-out), background-color 160ms var(--ease-out); }
 }
